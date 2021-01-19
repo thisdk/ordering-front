@@ -1,0 +1,56 @@
+name: Node.js CI
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm run build:prod
+      - name: Jar to War
+        run: |
+          cd dist && jar -cfM0 ROOT.war ./
+          cd .. && mv dist/ROOT.war ./ROOT.war
+      - name: Upload to Coding
+        env:
+          DEPLOY_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$DEPLOY_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan e.coding.net >> ~/.ssh/known_hosts
+          git config --global user.name thisdk
+          git config --global user.email thisdk@gmail.com
+          mkdir ordering-deploy
+          cp ROOT.war ordering-deploy/ -f
+          cd ordering-deploy
+          git init && git add * && git commit -a -m "Deploy"
+          git remote add origin git@e.coding.net:thisdk/ordering-service/ordering-deploy.git
+          git push -u origin master -f
+      - name: Upload to Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ROOT
+          path: ROOT.war
+      - name: SSH to Host Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            sleep 5s && cd /home/ubuntu/deploy
+            curl -O https://thisdk.coding.net/p/ordering-service/d/ordering-deploy/git/raw/master/ROOT.war
+            sudo mv ROOT.war /opt/tomcat/latest/webapps -f
