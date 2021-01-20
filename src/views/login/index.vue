@@ -67,7 +67,7 @@ export default {
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error('请输入用户名'))
+        callback(new Error('请输入不少于5位用户名'))
       } else {
         callback()
       }
