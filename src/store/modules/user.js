@@ -1,11 +1,12 @@
-import { login, getUserInfo, logout } from '@/api/user'
+import { login, query } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
   return {
     token: getToken(),
-    nickname: ''
+    nickname: '',
+    avatar: ''
   }
 }
 
@@ -20,6 +21,9 @@ const mutations = {
   },
   SET_NAME: (state, nickname) => {
     state.nickname = nickname
+  },
+  SET_AVATAR: (state, avatar) => {
+    state.avatar = avatar
   }
 }
 
@@ -38,15 +42,16 @@ const actions = {
     })
   },
 
-  getInfo({ commit }) {
+  getUserInfo({ commit }) {
     return new Promise((resolve, reject) => {
-      getUserInfo(null).then(response => {
+      query(null).then(response => {
         const { data } = response
         if (!data) {
           reject('Verification failed, please Login again.')
         }
         const { nickname } = data
         commit('SET_NAME', nickname)
+        commit('SET_AVATAR', require('../../assets/image/avatar.gif'))
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -54,16 +59,12 @@ const actions = {
     })
   },
 
-  logout({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        removeToken()
-        resetRouter()
-        commit('RESET_STATE')
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+  logout({ commit }) {
+    return new Promise((resolve) => {
+      removeToken()
+      resetRouter()
+      commit('RESET_STATE')
+      resolve()
     })
   },
 

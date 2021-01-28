@@ -18,12 +18,12 @@ router.beforeEach(async(to, from, next) => {
       next({ path: '/' })
       NProgress.done()
     } else {
-      const hasGetUserInfo = store.getters.name
+      const hasGetUserInfo = store.getters.nickname
       if (hasGetUserInfo) {
         next()
       } else {
         try {
-          await store.dispatch('user/getInfo')
+          await store.dispatch('user/getUserInfo')
           next()
         } catch (error) {
           await store.dispatch('user/resetToken')

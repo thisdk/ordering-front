@@ -1,13 +1,4 @@
-/**
- * Created by PanJiaChen on 16/11/18.
- */
 
-/**
- * Parse the time to string
- * @param {(Object|string|number)} time
- * @param {string} cFormat
- * @returns {string | null}
- */
 export function parseTime(time, cFormat) {
   if (arguments.length === 0 || !time) {
     return null
@@ -22,8 +13,6 @@ export function parseTime(time, cFormat) {
         // support "1548221490638"
         time = parseInt(time)
       } else {
-        // support safari
-        // https://stackoverflow.com/questions/4310953/invalid-date-in-safari
         time = time.replace(new RegExp(/-/gm), '/')
       }
     }
@@ -51,11 +40,7 @@ export function parseTime(time, cFormat) {
   return time_str
 }
 
-/**
- * @param {number} time
- * @param {string} option
- * @returns {string}
- */
+
 export function formatTime(time, option) {
   if (('' + time).length === 10) {
     time = parseInt(time) * 1000
@@ -94,10 +79,7 @@ export function formatTime(time, option) {
   }
 }
 
-/**
- * @param {string} url
- * @returns {Object}
- */
+
 export function param2Obj(url) {
   const search = decodeURIComponent(url.split('?')[1]).replace(/\+/g, ' ')
   if (!search) {
