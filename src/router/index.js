@@ -27,6 +27,30 @@ export const constantRoutes = [
       meta: { title: '仪表盘', icon: 'dashboard' }
     }]
   },
+  {
+    path: '/food',
+    component: Layout,
+    children: [
+      {
+        path: 'food',
+        name: 'Food',
+        component: () => import('@/views/food/index'),
+        meta: { title: '餐品管理', icon: 'component' }
+      }
+    ]
+  },
+  {
+    path: '/order',
+    component: Layout,
+    children: [
+      {
+        path: 'order',
+        name: 'Order',
+        component: () => import('@/views/order/index'),
+        meta: { title: '订单管理', icon: 'table' }
+      }
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 
