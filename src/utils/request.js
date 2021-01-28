@@ -5,7 +5,7 @@ import { getToken } from '@/utils/auth'
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
-  timeout: 3000
+  timeout: 5 * 1000
 })
 
 service.interceptors.request.use(
@@ -38,14 +38,15 @@ service.interceptors.response.use(
           type: 'error',
           duration: 5 * 1000
         })
+        if (res.code === -10086) {
+          store.dispatch('user/resetToken').then(() => {
+            location.reload()
+          })
+        }
         return Promise.reject(res.msg)
+      } else {
+        return res
       }
-      if (res.code === -10086) {
-        store.dispatch('user/resetToken').then(() => {
-          location.reload()
-        })
-      }
-      return res
     } else {
       return Promise.reject(new Error('code:' + response.status))
     }

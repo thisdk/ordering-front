@@ -52,4 +52,4 @@ jobs:
           script: |
             sleep 5s && cd /home/ubuntu/deploy
             curl -O https://thisdk.coding.net/p/ordering-service/d/ordering-deploy/git/raw/master/ROOT.war
-            sudo mv ROOT.war /opt/tomcat/latest/webapps -f
+            sudo mv ROOT.war /usr/local/tomcat/webapps -f

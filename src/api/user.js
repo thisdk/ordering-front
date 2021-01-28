@@ -8,10 +8,11 @@ export function login(data) {
   })
 }
 
-export function getUserInfo() {
+export function getUserInfo(data) {
   return request({
     url: '/user/getCurrentUser',
-    method: 'get'
+    method: 'post',
+    data
   })
 }
 
