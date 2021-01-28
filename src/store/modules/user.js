@@ -1,4 +1,5 @@
-import { login, query } from '@/api/user'
+import { login } from '@/api/auth'
+import { query } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -19,7 +20,7 @@ const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
   },
-  SET_NAME: (state, nickname) => {
+  SET_NICKNAME: (state, nickname) => {
     state.nickname = nickname
   },
   SET_AVATAR: (state, avatar) => {
@@ -32,7 +33,7 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
-        const token = response.data
+        const token = response
         commit('SET_TOKEN', token)
         setToken(token)
         resolve()
@@ -45,14 +46,12 @@ const actions = {
   getUserInfo({ commit }) {
     return new Promise((resolve, reject) => {
       query(null).then(response => {
-        const { data } = response
-        if (!data) {
+        if (!response) {
           reject('Verification failed, please Login again.')
         }
-        const { nickname } = data
-        commit('SET_NAME', nickname)
+        commit('SET_NICKNAME', response['nickname'])
         commit('SET_AVATAR', require('../../assets/image/avatar.gif'))
-        resolve(data)
+        resolve(response)
       }).catch(error => {
         reject(error)
       })

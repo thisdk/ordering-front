@@ -1,16 +1,16 @@
 import request from '@/utils/request'
 
-export function login(data) {
+export function query(data) {
   return request({
-    url: '/auth/login',
+    url: '/user/query',
     method: 'post',
     data
   })
 }
 
-export function query(data) {
+export function queryMiniProgramUser(data) {
   return request({
-    url: '/user/query',
+    url: '/user/queryMiniProgramUser',
     method: 'post',
     data
   })
