@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-container">
+  <div class="home-container">
     <panel-group :user="user" :order="order" :price="price" :obtain="obtain" />
     <el-row :gutter="32">
       <el-col :xs="24" :sm="24" :lg="8">
@@ -32,7 +32,7 @@ import PieChart from './components/PieChart'
 import BarChart from './components/BarChart'
 
 export default {
-  name: 'Dashboard',
+  name: 'Home',
   components: {
     PanelGroup,
     RaddarChart,
@@ -83,7 +83,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.dashboard-container {
+.home-container {
   padding: 32px;
   background-color: rgb(240, 242, 245);
 

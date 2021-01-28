@@ -19,12 +19,12 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: '/home',
     children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: '仪表盘', icon: 'dashboard' }
+      path: 'home',
+      name: '首页',
+      component: () => import('@/views/home/index'),
+      meta: { title: '首页', icon: 'dashboard' }
     }]
   },
   {
@@ -33,7 +33,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'food',
-        name: 'Food',
+        name: '餐品管理',
         component: () => import('@/views/food/index'),
         meta: { title: '餐品管理', icon: 'component' }
       }
@@ -45,7 +45,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'order',
-        name: 'Order',
+        name: '订单管理',
         component: () => import('@/views/order/index'),
         meta: { title: '订单管理', icon: 'table' }
       }
