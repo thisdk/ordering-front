@@ -72,8 +72,10 @@ export default {
       try {
         const list = await queryTodayOrder(null)
         this.order = list.length
-        this.price = list.map(i => i['orderPrice']).reduce((acc, i) => acc + i)
-        this.obtain = list.filter(i => i['status'] === 2).length
+        if (list.length > 0) {
+          this.price = list.map(i => i['orderPrice']).reduce((acc, i) => acc + i)
+          this.obtain = list.filter(i => i['status'] === 2).length
+        }
       } catch (e) {
         console.log(e)
       }
