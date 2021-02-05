@@ -55,4 +55,6 @@ jobs:
             sudo cp -f ROOT.war /usr/local/tomcat/1/webapps
             sudo cp -f ROOT.war /usr/local/tomcat/2/webapps
             sudo cp -f ROOT.war /usr/local/tomcat/3/webapps
+            sudo cp -f ROOT.war /usr/local/tomcat/4/webapps
+            rm -f ROOT.war
             exit
