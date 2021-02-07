@@ -21,7 +21,7 @@ jobs:
       - name: Jar to War
         run: |
           mv dist ordering
-          tar -czf ordering.tar.gz /ordering
+          tar -czf ordering.tar.gz ./ordering/
       - name: Upload to Coding
         env:
           DEPLOY_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
