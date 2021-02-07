@@ -18,7 +18,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
       - run: npm run build:prod
-      - name: Jar to War
+      - name: Bale to tar.gz
         run: |
           mv dist ordering
           tar -czf ordering.tar.gz ./ordering/
