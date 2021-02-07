@@ -20,8 +20,8 @@ jobs:
       - run: npm run build:prod
       - name: Jar to War
         run: |
-          cd dist && jar -cfM0 ROOT.war ./
-          cd .. && mv dist/ROOT.war ./ROOT.war
+          mv dist ordering
+          tar -czf ordering.tar.gz /ordering
       - name: Upload to Coding
         env:
           DEPLOY_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
@@ -33,15 +33,15 @@ jobs:
           git config --global user.name thisdk
           git config --global user.email thisdk@gmail.com
           git clone git@e.coding.net:thisdk/ordering-service/ordering-deploy.git
-          cp ROOT.war ordering-deploy/ -f
+          cp -f ordering.tar.gz ordering-deploy/
           cd ordering-deploy
           git add * && git commit -a -m "Deploy"
           git push -u origin master
       - name: Upload to Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: ROOT
-          path: ROOT.war
+          name: ordering-front
+          path: ordering.tar.gz
       - name: SSH to Host Deploy
         uses: appleboy/ssh-action@master
         with:
@@ -51,8 +51,7 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             sleep 5s && cd /home/ubuntu/deploy
-            curl -O https://thisdk.coding.net/p/ordering-service/d/ordering-deploy/git/raw/master/ROOT.war
-            sudo cp -f ROOT.war /usr/local/tomcat/1/webapps
-            sudo cp -f ROOT.war /usr/local/tomcat/2/webapps
-            rm -f ROOT.war
+            curl -O https://thisdk.coding.net/p/ordering-service/d/ordering-deploy/git/raw/master/ordering.tar.gz
+            sudo tar -xzvf ordering.tar.gz -C /usr/share/nginx
+            rm -f ordering.tar.gz
             exit
